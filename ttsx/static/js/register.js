@@ -1,6 +1,5 @@
 $(function(){
 
-
 	var error_name = false;
 	var error_password = false;
 	var error_check_password = false;
@@ -17,6 +16,7 @@ $(function(){
 		$('#user_name').blur(function () {
 			check_user_name();
 			$.each(data.list,function (n,user) {
+			    // alert('hello')
 				if($('#user_name').val() == user)
 				{
 					$('#user_name').next().html('用户名已存在');
@@ -121,12 +121,11 @@ $(function(){
 	}
 
 
-	$('#reg_form').submit(function() {
-		check_user_name();
-		check_pwd();
-		check_cpwd();
-		check_email();
-
+$('#reg_form').submit(function() {
+                check_user_name();
+                check_pwd();
+                check_cpwd();
+                check_email();
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
 			return true;
@@ -135,8 +134,7 @@ $(function(){
 		{
 			return false;
 		}
-
-	});
+});
 
 
 

@@ -9,6 +9,7 @@ urlpatterns=[
     url('^login/$',views.login),
     url('^register_username/$',views.register_username),
     url('^login_check/$',views.login_check),
+    url('^login_userinfo/$',views.login_userinfo),
 
 ]
 
