@@ -1,8 +1,77 @@
 {% extends 'base.html' %}
 {% block script %}
-	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript" src="/static/js/login.js"></script>
-    <script type="text/javascript" src="/static/js/sha1.js"></script>
+{#	<script type="text/javascript" src="/static/js/login.js"></script>#}
+{#    <script type="text/javascript" src="/static/js/sha1.js"></script>#}
+    <script>
+       $(function(){
+    if ('{{name_error}}' == '1')
+	{
+		$('.name_input').next().html('用户名错误').show();
+		error_name = true;
+	}
+
+	if ('{{pwd_error}}' == '1')
+	{
+		$('.pass_input').next().html('密码错误').show();
+		error_password = true;
+	}
+	var error_name = false;
+	var error_password = false;
+
+	$('.name_input').blur(function() {
+		check_user_name();
+	});
+
+	$('.pass_input').blur(function() {
+		check_pwd();
+	});
+
+	function check_user_name(){
+		var len = $('.name_input').val().length;
+		if(len<5||len>20)
+		{
+			$('.name_input').next().html('请输入5-20个字符的用户名').show();
+			error_name = true;
+		}
+		else
+		{
+			$('.name_input').next().hide();
+			error_name = false;
+		}
+	}
+
+	function check_pwd(){
+		var len = $('.pass_input').val().length;
+		if(len<8||len>20)
+		{
+			$('.pass_input').next().html('密码最少8位，最长20位').show();
+			error_password = true;
+		}
+		else
+		{
+			$('.pass_input').next().hide();
+			error_password = false;
+		}
+	}
+
+$('#reg_form').submit(function() {
+                check_user_name();
+                check_pwd();
+                // alert(error_name)
+		if(error_name == false && error_password == false )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+});
+
+
+})
+
+    </script>
 {% endblock script %}
 {% block body %}
 
@@ -23,8 +92,8 @@
 					<form id="reg_form" method="post" action="/user/login_check/">
                         {% csrf_token %}
 						<input type="text" name="username" class="name_input" placeholder="请输入用户名" value={{ uname }}>
-						<div class="user_error">用户名不存在</div>
-						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+						<div class="user_error">输入错误</div>
+						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码" value="{{ upwd }}">
 						<div class="pwd_error">输入错误</div>
 						<div class="more_input clearfix">
 							<input type="checkbox" name="check">

@@ -21,9 +21,12 @@ $(function(){
 				{
 					$('#user_name').next().html('用户名已存在');
 					$('#user_name').next().show();
+					error_name = true;
+					// alert(error_name)
 					return false;
 
 				}
+
             })
         })
     })
@@ -115,17 +118,18 @@ $(function(){
 		{
 			$('#email').next().html('你输入的邮箱格式不正确')
 			$('#email').next().show();
-			error_check_password = true;
+			error_email = true;
 		}
 
 	}
 
 
 $('#reg_form').submit(function() {
-                check_user_name();
+                // check_user_name();
                 check_pwd();
                 check_cpwd();
                 check_email();
+                // alert(error_name)
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
 			return true;
