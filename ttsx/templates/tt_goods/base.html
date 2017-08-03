@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block body %}
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>
+				<ul class="subnav">
+					<li><a href="/list1" class="fruit">新鲜水果</a></li>
+					<li><a href="/list2" class="seafood">海鲜水产</a></li>
+					<li><a href="/list3" class="meet">猪牛羊肉</a></li>
+					<li><a href="/list4" class="egg">禽类蛋品</a></li>
+					<li><a href="/list5" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/list6" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+    {% block breadcrumb %}{% endblock breadcrumb %}
+    {% block goods_detail %}{% endblock goods_detail %}
+    <div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+                    {% for temp in list_new %}
+					<li>
+						<a href="#"><img src="/static/{{ temp.gpic }}"></a>
+						<h4><a href="#">{{ temp.gtitle }}</a></h4>
+						<div class="prize">￥{{ temp.gprice }}</div>
+					</li>
+                    {% endfor %}
+{#					<li>#}
+{#						<a href="#"><img src="/static/images/goods/goods002.jpg"></a>#}
+{#						<h4><a href="#">玫瑰香葡萄</a></h4>#}
+{#						<div class="prize">￥16.80</div>#}
+{#					</li>#}
+				</ul>
+			</div>
+		</div>
+    {% block r_wrap %}{% endblock r_wrap %}
+    </div>
+    {% block add_jump %}{% endblock add_jump %}
+{% endblock body%}

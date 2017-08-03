@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/tiny_mce/tiny_mce.js"></script>
+    <script type="text/javascript">
+        tinyMCE.init({
+            'mode':'textareas',
+            'theme':'advanced',
+            'width':400,
+            'height':100
+        });
+    </script>
+</head>
+<body>
+<form action="/demo/mce2/" method="post">
+    {% csrf_token %}
+    <textarea name="mce1"><h1>hello world</h1></textarea>
+    <br>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

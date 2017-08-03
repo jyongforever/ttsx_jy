@@ -60,17 +60,20 @@ def login(request):
 
 
 def login_check(request):
+    # 获取登录页面表单提交的数据
     dict = request.POST
     check = dict.get('check')
     uname = dict.get('username')
     upwd = dict.get('pwd')
-    print(uname)
-    print(upwd)
+    # print(uname)
+    # print(upwd)
+    # 加密
     s1 = sha1()
     s1.update(upwd)
     upwd_sha1 = s1.hexdigest()
-
+    # top为0布加载顶部信息模板
     context = {'title': '登录', 'uname': uname, 'upwd': upwd, 'top': '0'}
+    # 从数据库过滤获取uname=uname的数据对象
     users = UserInfo.objects.filter(uname=uname)
     if len(users) == 0:
         # 用户名错误
@@ -97,6 +100,7 @@ def login_check(request):
 
 
 def logout(request):
+    # 清空session数据，忘记登录状态
     request.session.flush()
     return redirect('/user/login/')
 
@@ -105,6 +109,7 @@ def index(request):
     return render(request, 'tt_user/index.html', {'title': '首页'})
 
 
+# 装饰器用来判断用户是否登录，未登录则转到登录页面
 @user_login
 def info(request):
     user = UserInfo.objects.get(pk=request.session['uid'])
@@ -120,6 +125,7 @@ def order(request):
 @user_login
 def site(request):
     user = UserInfo.objects.get(pk=request.session['uid'])
+    # 判断当前页面发出POST请求时，记录信息到相应的用户数据中，并展现在页面上
     if request.method == 'POST':
         post = request.POST
         user.ushou = post.get('ushou')
