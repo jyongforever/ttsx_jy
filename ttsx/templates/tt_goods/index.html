@@ -52,10 +52,10 @@
 			<div class="subtitle fl">
 				<span>|</span>
                 {% for click in temp.list_click %}
-				<a href="#" title={{ click.gtitle }}>{{ click.gtitle|truncatechars:16 }}</a>
+				<a href="/{{ click.id }}/" title={{ click.gtitle }}>{{ click.gtitle }}</a>
                 {% endfor %}
 			</div>
-			<a href="/list{{ temp.type.id }}_1" class="goods_more fr" id="fruit_more">查看更多 ></a>
+			<a href="/list{{ temp.type.id }}_1_1/" class="goods_more fr" id="fruit_more">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -63,8 +63,8 @@
 			<ul class="goods_list fl">
                 {% for new in temp.list_new %}
 				<li>
-					<h4><a href="#">{{ new.gtitle }}</a></h4>
-					<a href="#"><img src="/static/{{ new.gpic }}"></a>
+					<h4><a href="/{{ new.id }}/">{{ new.gtitle|truncatechars:16 }}</a></h4>
+					<a href="/{{ new.id }}/"><img src="/static/{{ new.gpic }}"></a>
 					<div class="prize">¥ {{ new.gprice }}</div>
 				</li>
 				{% endfor %}

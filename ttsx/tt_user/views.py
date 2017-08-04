@@ -119,7 +119,7 @@ def info(request):
 
 @user_login
 def order(request):
-    return render(request, 'tt_user/order.html', {'title': '用户订单'})
+    return render(request, 'tt_user/order.html', {'title': '用户订单','isleft':'0'})
 
 
 @user_login

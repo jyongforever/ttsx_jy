@@ -19,6 +19,7 @@ $(function(){
 			    // alert('hello')
 				if($('#user_name').val() == user)
 				{
+					alert('hello')
 					$('#user_name').next().html('用户名已存在');
 					$('#user_name').next().show();
 					error_name = true;
