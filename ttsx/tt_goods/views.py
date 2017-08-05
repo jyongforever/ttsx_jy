@@ -71,9 +71,19 @@ def detail(request,goods_id):
         goods.gclick+=1
         goods.save()
         context={'title':'详细页','list_new':list_new,'goods':goods,'cart':'1'}
+        response = render(request, 'tt_goods/detail.html',context)
+        if not request.COOKIES.has_key('rec'):
+            # print('111')
+            response.set_cookie('rec',str(goods_id))
+            # print('222')
+        # print('333')
+        else:
+            response.set_cookie('rec',request.COOKIES['rec']+'-'+str(goods_id))
+        # print('444')
     except:
         return render(request,'404.html')
-    return render(request, 'tt_goods/detail.html',context)
+    finally:
+        return response
 
 
 class MySearchView(SearchView):

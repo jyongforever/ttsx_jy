@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from hashlib import sha1
 from models import UserInfo
+from tt_goods.models import GoodsInfo
 from tt_user.user_decorators import user_login
 import random
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -105,21 +106,31 @@ def logout(request):
     return redirect('/user/login/')
 
 
-def index(request):
-    return render(request, 'tt_user/index.html', {'title': '首页'})
-
-
 # 装饰器用来判断用户是否登录，未登录则转到登录页面
 @user_login
 def info(request):
+    glist=[]
+    if request.COOKIES.has_key('rec'):
+        rec = request.COOKIES['rec']
+        list_rec = rec.split('-')
+        # list_rec.pop(0)
+        try:
+            for gid in list_rec:
+                glist.append(GoodsInfo.objects.get(pk=int(gid)))
+            else:
+                glist.reverse()
+                if len(glist) > 5:
+                    glist = glist[0:5]
+        except:
+            return render(request,'404.html')
     user = UserInfo.objects.get(pk=request.session['uid'])
-    context = {'title': '用户中心', 'uname': user.uname, 'uemail': user.uemail}
+    context = {'title': '用户中心', 'uname': user.uname, 'uemail': user.uemail,'list_rec':glist}
     return render(request, 'tt_user/info.html', context)
 
 
 @user_login
 def order(request):
-    return render(request, 'tt_user/order.html', {'title': '用户订单','isleft':'0'})
+    return render(request, 'tt_user/order.html', {'title': '用户订单'})
 
 
 @user_login

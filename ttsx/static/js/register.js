@@ -13,10 +13,21 @@ $(function(){
 	//
 	// });
 		$.get('/user/register_username/',function (data) {
+			// check_user_name();
+			var len = $('#user_name').val().length;
+		if(len<5||len>20)
+		{
+			error_name = true;
+		}
+		else
+		{
+			error_name = false;
+		}
+
 		$('#user_name').blur(function () {
-			check_user_name();
 			$.each(data.list,function (n,user) {
 			    // alert('hello')
+				check_user_name();
 				if($('#user_name').val() == user)
 				{
 					alert('hello')
@@ -128,12 +139,17 @@ $(function(){
 $('#reg_form').submit(function() {
                 // check_user_name();
                 check_pwd();
+                // alert('111')
                 check_cpwd();
+                // alert('222')
                 check_email();
+                // alert('333')
                 // alert(error_name)
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
+			// alert('444')
 			return true;
+			// alert('555')
 		}
 		else
 		{
