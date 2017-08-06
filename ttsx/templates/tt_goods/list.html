@@ -6,6 +6,27 @@
 {#            $($('.sort_bar a')[order_by]).addClass('active')#}
             $('.sort_bar a').eq(order_by).prop('class','active')
         })
+
+        function add_cart(gid) {
+            $.get('/user/islogin',function (data) {
+                if(data.islogin==1)
+                {
+                    $.get('/cart/add/',{'gid':gid,'count':1},function (data) {
+                        if(data.isok==1)
+                        {
+                            alert('加入购物车成功')
+                            $.get('/cart/cart_count/',function (data) {
+                            $('#show_count').html(data.count)
+                    })
+                        }
+                        else
+                        {
+                            location.href='/user/login/'
+                        }
+                    })
+                }
+            })
+        }
     </script>
 {% endblock script %}
 {% block breadcrumb %}
@@ -33,7 +54,7 @@
 					<div class="operate">
 						<span class="prize">￥{{ goods.gprice }}</span>
 						<span class="unit">{{ goods.gunit }}</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
+						<a href="javascript:add_cart({{ goods.id }})" class="add_goods" title="加入购物车"></a>
 					</div>
 				</li>
                 {% endfor %}
@@ -42,19 +63,19 @@
 
 			<div class="pagenation">
                 {% if page.has_previous %}
-                <a href="/list{{ type.id }}_1">首页</a>
-				<a href="/list{{ type.id }}_{{ page.number|add:-1 }}">上一页</a>
+                <a href="/list{{ type.id }}_1_{{ order_by }}">首页</a>
+				<a href="/list{{ type.id }}_{{ page.number|add:-1 }}_{{ order_by }}">上一页</a>
                 {% endif %}
                 {% for pindex in plist %}
                     {% if pindex == page.number %}
 				<a href="#" class="active">{{ pindex }}</a>
                     {% else %}
-				<a href="/list{{ type.id }}_{{ pindex }}">{{ pindex }}</a>
+				<a href="/list{{ type.id }}_{{ pindex }}_{{ order_by }}">{{ pindex }}</a>
 				    {% endif %}
                 {% endfor %}
 				{% if page.has_next %}
-                <a href="/list{{ type.id }}_{{ page.number|add:1 }}">下一页</a>
-				<a href="/list{{ type.id }}_{{ page.paginator.num_pages }}">末页</a>
+                <a href="/list{{ type.id }}_{{ page.number|add:1 }}_{{ order_by }}">下一页</a>
+				<a href="/list{{ type.id }}_{{ page.paginator.num_pages }}_{{ order_by }}">末页</a>
                 {% endif %}
 			</div>
 

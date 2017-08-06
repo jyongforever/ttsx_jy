@@ -71,19 +71,29 @@ def detail(request,goods_id):
         goods.gclick+=1
         goods.save()
         context={'title':'详细页','list_new':list_new,'goods':goods,'cart':'1'}
+        # 最近浏览
         response = render(request, 'tt_goods/detail.html',context)
+        # 如果不存在cookie'rec'，则设置cookie'rec‘的值为goods_id
         if not request.COOKIES.has_key('rec'):
-            # print('111')
             response.set_cookie('rec',str(goods_id))
-            # print('222')
-        # print('333')
         else:
-            response.set_cookie('rec',request.COOKIES['rec']+'-'+str(goods_id))
-        # print('444')
+            # 将cookie中的值以'-'切割为列表
+            glist = request.COOKIES['rec'].split('-')
+            # 如果gid存在glist中，则删除glist中的gid，然后将gid拼接到cookie的值中
+            if goods_id in glist:
+                glist.remove(goods_id)
+                response.set_cookie('rec', '-'.join(glist) + '-' + str(goods_id))
+            else:
+                #如果glist中元素数量大于等于５个，则删除首个元素，
+                if len(glist)>=5:
+                    glist.pop(0)
+
+                response.set_cookie('rec', '-'.join(glist)+'-'+str(goods_id))
+
+            # print(request.COOKIES['rec'])
+        return response
     except:
         return render(request,'404.html')
-    finally:
-        return response
 
 
 class MySearchView(SearchView):

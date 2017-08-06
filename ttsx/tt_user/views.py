@@ -106,23 +106,28 @@ def logout(request):
     return redirect('/user/login/')
 
 
+def islogin(request):
+    result = 0
+    if request.session.has_key('uid'):
+        result = 1
+    return JsonResponse({'islogin':result})
+
+
 # 装饰器用来判断用户是否登录，未登录则转到登录页面
 @user_login
 def info(request):
     glist=[]
-    if request.COOKIES.has_key('rec'):
-        rec = request.COOKIES['rec']
-        list_rec = rec.split('-')
-        # list_rec.pop(0)
-        try:
+    try:
+        if request.COOKIES.has_key('rec'):
+            rec = request.COOKIES['rec']
+            list_rec = rec.split('-')
             for gid in list_rec:
                 glist.append(GoodsInfo.objects.get(pk=int(gid)))
             else:
                 glist.reverse()
-                if len(glist) > 5:
-                    glist = glist[0:5]
-        except:
-            return render(request,'404.html')
+    except:
+        pass
+
     user = UserInfo.objects.get(pk=request.session['uid'])
     context = {'title': '用户中心', 'uname': user.uname, 'uemail': user.uemail,'list_rec':glist}
     return render(request, 'tt_user/info.html', context)
@@ -147,5 +152,3 @@ def site(request):
     return render(request, 'tt_user/site.html', context)
 
 
-def cart(request):
-    return render(request, 'tt_user/cart.html', {'title': '购物车'})

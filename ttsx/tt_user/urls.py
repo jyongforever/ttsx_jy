@@ -9,8 +9,8 @@ urlpatterns = [
     url('^login/$', views.login),
     url('^register_username/$', views.register_username),
     url('^login_check/$', views.login_check),
-    url('^cart/$', views.cart),
     url('^order/$', views.order),
     url('^site/$', views.site),
     url('^logout/$', views.logout),
+    url('^islogin/$',views.islogin),
 ]

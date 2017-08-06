@@ -11,5 +11,6 @@ class UrlMiddleware:
             '/user/register_username/',
             '/user/login_check/',
             '/user/logout/',
+            '/user/islogin/',
         ]:
             request.session['url_path'] = request.get_full_path()

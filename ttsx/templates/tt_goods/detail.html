@@ -21,8 +21,6 @@
                 $(this).val(num)
             })
 
-
-
             $('.add').click(function () {
                 var num = parseInt($('.num_show').val());
                 num++;
@@ -33,6 +31,53 @@
                 var num = parseInt($('.num_show').val());
                 num--;
                 $('.num_show').val(num).blur();
+            })
+
+            $('#add_cart').click(function () {
+                var gid = {{ goods.id }}
+{#                alert('111'+gid)#}
+                var count = $('.num_show').val()
+{#                alert(count)#}
+
+                $.get('/user/islogin/',function (data) {
+                    if(data.islogin==1)
+                    {
+{#                        alert(data.islogin)#}
+                        $.get('/cart/add/',{'gid':gid,'count':count},function (data) {
+
+                            if(data.isok==1)
+                            {
+                            var $add_x = $('#add_cart').offset().top;
+                            var $add_y = $('#add_cart').offset().left;
+
+                            var $to_x = $('#show_count').offset().top;
+                            var $to_y = $('#show_count').offset().left;
+
+                            $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+                                $(".add_jump").stop().animate({
+                                    'left': $to_y+7,
+                                    'top': $to_x+7},
+                                    "fast", function() {
+                                        $(".add_jump").fadeOut('fast',function(){
+                                            $.get('/cart/cart_count/',function (data) {
+                                            $('#show_count').html(data.count)
+                    })
+
+                                        });
+
+                                });
+
+
+                            }
+
+                            else
+                            {
+                                location.href='/user/login/'
+                            }
+
+                        })
+                    }
+                })
             })
         })
     </script>
@@ -86,30 +131,29 @@
 			<div class="tab_content"><dd>{{ goods.gcontent|safe }}</dd></div>
 
 		</div>
-
+<div class="add_jump"></div>
 {% endblock r_wrap %}
 	{% block add_jump %}
-	<div class="add_jump"></div>
 
-	<script type="text/javascript" src="js/jquery-1.12.2.js"></script>
-	<script type="text/javascript">
-		var $add_x = $('#add_cart').offset().top;
-		var $add_y = $('#add_cart').offset().left;
 
-		var $to_x = $('#show_count').offset().top;
-		var $to_y = $('#show_count').offset().left;
-
-		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
-		$('#add_cart').click(function(){
-			$(".add_jump").stop().animate({
-				'left': $to_y+7,
-				'top': $to_x+7},
-				"fast", function() {
-					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
-					});
-
-			});
-		})
-	</script>
+{#	<script type="text/javascript">#}
+{#		var $add_x = $('#add_cart').offset().top;#}
+{#		var $add_y = $('#add_cart').offset().left;#}
+{##}
+{#		var $to_x = $('#show_count').offset().top;#}
+{#		var $to_y = $('#show_count').offset().left;#}
+{##}
+{#		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})#}
+{#		$('#add_cart').click(function(){#}
+{#			$(".add_jump").stop().animate({#}
+{#				'left': $to_y+7,#}
+{#				'top': $to_x+7},#}
+{#				"fast", function() {#}
+{#					$(".add_jump").fadeOut('fast',function(){#}
+{#						$('#show_count').html(5);#}
+{#					});#}
+{##}
+{#			});#}
+{#		})#}
+{#	</script>#}
 	{% endblock add_jump %}
