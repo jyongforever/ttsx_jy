@@ -1,4 +1,28 @@
 {% extends 'tt_goods/base.html' %}
+{% block script %}
+    <script>
+        function add_cart(gid) {
+            $.get('/user/islogin',function (data) {
+                if(data.islogin==1)
+                {
+                    $.get('/cart/add/',{'gid':gid,'count':1},function (data) {
+                        if(data.isok==1)
+                        {
+                            alert('加入购物车成功')
+                            $.get('/cart/cart_count/',function (data) {
+                            $('#show_count').html(data.count)
+                    })
+                        }
+                        else
+                        {
+                            location.href='/user/login/'
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+{% endblock script %}
 {% block breadcrumb %}
 <div class="main_wrap clearfix">
 			<ul class="goods_type_list clearfix">
@@ -9,7 +33,7 @@
 					<div class="operate">
 						<span class="prize">￥{{ item.object.gprice }}</span>
 						<span class="unit">{{ item.object.gunit }}</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
+						<a href="javascript:add_cart({{ item.object.id }})" class="add_goods" title="加入购物车"></a>
 					</div>
 
 				</li>

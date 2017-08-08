@@ -40,7 +40,7 @@ def list_goods(request, type_id, page_index,order_by):
     # 获取当前页面商品类的所有商品对象
     list = typeinfo.goodsinfo_set.order_by(order_bystr)
     # print(list)
-    paginator = Paginator(list, 15)
+    paginator = Paginator(list, 10)
     max_page = paginator.num_pages
     page_index = int(page_index)
     if page_index <= 0:

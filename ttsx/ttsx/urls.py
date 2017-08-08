@@ -22,5 +22,6 @@ urlpatterns = [
     url('^demo/',include('tt_demo.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^cart/',include('tt_cart.urls')),
+    url(r'^order/',include('tt_order.urls')),
 ]
 

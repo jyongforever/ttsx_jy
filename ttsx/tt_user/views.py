@@ -1,10 +1,12 @@
 # coding:utf-8
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from hashlib import sha1
 from models import UserInfo
 from tt_goods.models import GoodsInfo
+from tt_order.models import OrderInfo, OrderDetailInfo
 from tt_user.user_decorators import user_login
 import random
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -86,7 +88,7 @@ def login_check(request):
             request.session['uid'] = users[0].id
             request.session['uname'] = uname
             # 重定向，即从哪来，回哪去
-            path = request.session.get('url_path', '/user/')
+            path = request.session.get('url_path', '/')
             response = redirect(path)
             # 记住用户名
             if check == 'on':
@@ -134,9 +136,15 @@ def info(request):
 
 
 @user_login
-def order(request):
-    return render(request, 'tt_user/order.html', {'title': '用户订单'})
+def order(request,page_index):
+    uid = request.session.get('uid')
+    orders = OrderInfo.objects.filter(user_id=uid)
+    order_list = []
+    for order in orders:
+        order_list.append({'order':order,'detail_list':OrderDetailInfo.objects.filter(order=order)})
 
+    context = {'title':'用户订单','order_list':order_list,}
+    return render(request, 'tt_user/order.html', context)
 
 @user_login
 def site(request):

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from models import CartInfo
+from tt_goods.models import GoodsInfo
 from tt_user.models import UserInfo
 from tt_user.user_decorators import user_login
 
@@ -11,7 +12,7 @@ def add(request):
     dict = request.GET
     gid = int(dict.get('gid',''))
     count = int(dict.get('count'))
-
+    kucun = GoodsInfo.objects.get(pk=gid).gkucun
     uid = int(request.session.get('uid'))
 
     carts = CartInfo.objects.filter(user_id=uid,goods_id=gid)
@@ -23,7 +24,11 @@ def add(request):
         cart.save()
     else:
         cart = carts[0]
-        cart.count+=count
+        count1 =cart.count+count
+        if count1 > kucun:
+            cart.count=kucun
+        else:
+            cart.count+=count
         cart.save()
 
 
