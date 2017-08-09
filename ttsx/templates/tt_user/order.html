@@ -4,16 +4,6 @@
         $(function () {
 
 
-              if($('#ispay').text() == 'False')
-            {
-                $('#ispay').text('未支付')
-            }
-            else{
-                  $('#ispay').text('已支付')
-              }
-
-
-
         })
     </script>
 {% endblock script %}
@@ -31,12 +21,12 @@
 		</div>
 		<div class="right_content clearfix">
 				<h3 class="common_title2">全部订单</h3>
-                {% for temp in order_list %}
+                {% for order in page %}
 
 				<ul class="order_list_th w978 clearfix">
-					<li class="col01">{{ temp.order.odate }}</li>
-					<li class="col02">订单号：{{ temp.order.oid }}</li>
-					<li class="col02 stress" id="ispay">{{ temp.order.oIsPay }}</li>
+					<li class="col01">{{ order.odate }}</li>
+					<li class="col02">订单号：{{ order.oid }}</li>
+					<li class="col02 stress" id="ispay">{% if order.oIsPay == True %}已支付{% else %}未支付{% endif %}</li>
 				</ul>
 
 
@@ -44,41 +34,52 @@
 					<tbody>
 						<tr>
 							<td width="55%">
-                                {% for detail in temp.detail_list %}
+                                {% for detail in order.orderdetailinfo_set.all %}
 								<ul class="order_goods_list clearfix">					
 									<li class="col01"><img src="/static/{{ detail.goods.gpic }}"></li>
-									<li class="col02">{{ detail.goods.gtitle }}<em>{{ detail.price }}元/{{ detail.goods.gunit }}</em></li>
+									<li class="col02">{{ detail.goods.gtitle|truncatechars:18 }}<em>{{ detail.price }}元/{{ detail.goods.gunit }}</em></li>
 									<li class="col03">{{ detail.count }}</li>
 									<li class="col04">{{ detail.price }}元</li>
 								</ul>
                                 {% endfor %}
 
 							</td>
-							<td width="15%">{{ temp.order.ototal }}元</td>
-							<td width="15%">待付款</td>
-							<td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+							<td width="15%">{{ order.ototal }}{{ pindex }}元</td>
+
+							{% if order.oIsPay %}
+                                <td width="15%">已付款</td>
+                                <td width="15%"><a href="#" class="oper_btn">查看物流</a></td>
+                            {% else %}
+                                <td width="15%">待付款</td>
+                                <td width="15%"><a href="#" class="oper_btn">去付款</a></td>
+                            {% endif %}
 						</tr>
 					</tbody>
 				</table>
 
 				{% endfor %}
-                <div class="pagenation">
-                {% if page.has_previous %}
-                <a href="/list{{ type.id }}_1_{{ order_by }}">首页</a>
-				<a href="/list{{ type.id }}_{{ page.number|add:-1 }}_{{ order_by }}">上一页</a>
-                {% endif %}
-                {% for pindex in plist %}
-                    {% if pindex == page.number %}
-				<a href="#" class="active">{{ pindex }}</a>
-                    {% else %}
-				<a href="/list{{ type.id }}_{{ pindex }}_{{ order_by }}">{{ pindex }}</a>
-				    {% endif %}
-                {% endfor %}
-				{% if page.has_next %}
-                <a href="/list{{ type.id }}_{{ page.number|add:1 }}_{{ order_by }}">下一页</a>
-				<a href="/list{{ type.id }}_{{ page.paginator.num_pages }}_{{ order_by }}">末页</a>
-                {% endif %}
-			</div>
+            <div class="pagenation">
+                    {% if page.has_previous %}
+                        <a href="?page=1">首页</a>
+                        <a href="?page={{ page.number|add:-1 }}">上一页</a>
+                    {% endif %}
+            {% load filters %}
+                    {% for pindex in page|page_list %}
+                        {% if pindex == page.number %}
+                        <a href="#" class="active">{{ pindex }}</a>
+                        {% else %}
+                        <a href="?page={{ pindex }}">{{ pindex }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page.has_next %}
+                        <a href="?page={{ page.number|add:1 }}">下一页</a>
+                        <a href="?page={{ page.paginator.num_pages }}">末页</a>
+                    {% endif %}
+                </div>
+
+                </div>
+            </div>
 {% endblock body%}
 
 

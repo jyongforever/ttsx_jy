@@ -136,14 +136,18 @@ def info(request):
 
 
 @user_login
-def order(request,page_index):
+def order(request):
     uid = request.session.get('uid')
-    orders = OrderInfo.objects.filter(user_id=uid)
-    order_list = []
-    for order in orders:
-        order_list.append({'order':order,'detail_list':OrderDetailInfo.objects.filter(order=order)})
-
-    context = {'title':'用户订单','order_list':order_list,}
+    order_list = OrderInfo.objects.filter(user_id=uid).order_by('-odate')
+    pindex = int(request.GET.get('page','1'))
+    print(pindex)
+    paginator = Paginator(order_list,2)
+    if pindex<=0:
+        pindex = 1
+    if pindex >= paginator.num_pages:
+        pindex=paginator.num_pages
+    page = paginator.page(pindex)
+    context = {'title':'用户订单','page':page,'pindex':pindex}
     return render(request, 'tt_user/order.html', context)
 
 @user_login
