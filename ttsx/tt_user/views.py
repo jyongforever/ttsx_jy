@@ -138,9 +138,8 @@ def info(request):
 @user_login
 def order(request):
     uid = request.session.get('uid')
-    order_list = OrderInfo.objects.filter(user_id=uid).order_by('-odate')
+    order_list = OrderInfo.objects.filter(user_id=uid).order_by('-oid')
     pindex = int(request.GET.get('page','1'))
-    print(pindex)
     paginator = Paginator(order_list,2)
     if pindex<=0:
         pindex = 1

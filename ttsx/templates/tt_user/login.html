@@ -20,11 +20,15 @@
 
 	$('.name_input').blur(function() {
 		check_user_name();
-	});
+	}).focus(function () {
+			$('.name_input').next().hide();
+        });
 
 	$('.pass_input').blur(function() {
 		check_pwd();
-	});
+	}).focus(function () {
+			$('.pass_input').next().hide();
+        });
 
 	function check_user_name(){
 		var len = $('.name_input').val().length;

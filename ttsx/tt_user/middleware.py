@@ -5,7 +5,7 @@ class UrlMiddleware:
         # print('process----')
         # 判断不在以下URL列表中的，记住urlsession里
         if request.path not in [
-            '/user/regiser/',
+            '/user/register/',
             '/user/register_handle/',
             '/user/login/',
             '/user/register_username/',
@@ -14,3 +14,4 @@ class UrlMiddleware:
             '/user/islogin/',
         ]:
             request.session['url_path'] = request.get_full_path()
+            print(request.session['url_path'])

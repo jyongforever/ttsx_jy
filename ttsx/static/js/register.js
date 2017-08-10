@@ -30,7 +30,6 @@ $(function(){
 				check_user_name();
 				if($('#user_name').val() == user)
 				{
-					alert('hello')
 					$('#user_name').next().html('用户名已存在');
 					$('#user_name').next().show();
 					error_name = true;
@@ -40,19 +39,30 @@ $(function(){
 				}
 
             })
+        }).focus(function () {
+			$('#user_name').next().hide();
         })
+
+
+
     })
 	$('#pwd').blur(function() {
 		check_pwd();
-	});
+	}).focus(function () {
+			$('#pwd').next().hide();
+        });
 
 	$('#cpwd').blur(function() {
 		check_cpwd();
-	});
+	}).focus(function () {
+			$('#cpwd').next().hide();
+        });
 
 	$('#email').blur(function() {
 		check_email();
-	});
+	}).focus(function () {
+			$('#email').next().hide();
+        });
 
 	$('#allow').click(function() {
 		if($(this).is(':checked'))
@@ -158,10 +168,7 @@ $('#reg_form').submit(function() {
 });
 
 
-
-
-
-
-
-
 })
+
+
+

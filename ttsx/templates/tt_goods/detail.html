@@ -24,13 +24,13 @@
             $('.add').click(function () {
                 var num = parseInt($('.num_show').val());
                 num++;
-                $('.num_show').val(num).blur();
+                $('.num_show').val(num).keyup();
             })
 
             $('.minus').click(function () {
                 var num = parseInt($('.num_show').val());
                 num--;
-                $('.num_show').val(num).blur();
+                $('.num_show').val(num).keyup();
             })
 
             $('#add_cart').click(function () {
@@ -59,7 +59,7 @@
                                     'top': $to_x+7},
                                     "fast", function() {
                                         $(".add_jump").fadeOut('fast',function(){
-                                            $.get('/cart/cart_count/',function (data) {
+                                            $.get('/cart/count/',function (data) {
                                             $('#show_count').html(data.count)
                     })
 

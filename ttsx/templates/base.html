@@ -6,22 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
 	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
-    <script>
-        $(function () {
-            $.get('/user/islogin/',function (data) {
-                if(data.islogin==0)
-                {
-                    $('#show_count').html(0)
-                }
-                else if(data.islogin==1)
-                {
-                    $.get('/cart/cart_count/',function (data) {
-                        $('#show_count').html(data.count)
-                    })
-                }
-            })
-        })
-    </script>
+
     {% block script %}{% endblock script %}
 </head>
 <body>
@@ -84,6 +69,13 @@
 			<div class="goods_count fl" id="show_count">1</div>
 		</div>
 	</div>
+        <script>
+        if($('.login_btn').text().indexOf('登录')==-1){
+            $.get('/cart/count/',function (data) {
+                $('#show_count').text(data.count);
+            });
+        }
+        </script>
 {% endif %}
 {%endif%}
 

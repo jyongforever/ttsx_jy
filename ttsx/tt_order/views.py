@@ -9,7 +9,6 @@ from tt_cart.models import CartInfo
 from tt_order.models import OrderInfo, OrderDetailInfo
 from tt_user.models import UserInfo
 
-
 def list(request):
     dict = request.POST
     cid = dict.getlist('cid')
@@ -27,6 +26,13 @@ def handle(request):
         cids = dict.getlist('cid')
         addr = dict.get('addr')
         uid = request.session.get('uid')
+        if len(cids)==0:
+            transaction.savepoint_commit(sid)
+            return redirect('/cart/')
+        if len(addr)<=10:
+            transaction.savepoint_commit(sid)
+            return redirect('/user/site/')
+
         '''
         创建订单主表对象
         判断商品库存是否足够
@@ -45,9 +51,7 @@ def handle(request):
         for cart in cart_list:
             # 库存不够，放弃购买
             if cart.count > cart.goods.gkucun:
-                print('111')
                 transaction.savepoint_rollback(sid)
-                print('222')
                 return redirect('/cart/')
             # 库存足够，创建订单详表
             else:
@@ -73,6 +77,6 @@ def handle(request):
             return redirect('/user/order/')
 
     except:
-
+        print 'aaaaaa'
         transaction.savepoint_rollback(sid)
         return redirect('/cart/')
